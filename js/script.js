@@ -6,6 +6,10 @@ const repoList = document.querySelector(".repo-list");
 const reposAllInfo = document.querySelector(".repos");
 //section where individual repo information will appear
 const repoData = document.querySelector(".repo-data");
+//Back to Repo Gallery button
+const backToGalleryButton = document.querySelector(".view-repos");
+//search by name input
+const filterInput = document.querySelector(".filter-repos");
 
 const username = "LoraY-coder";
 
@@ -40,8 +44,9 @@ const fromGitRepos = async function () {
     displayRepoInfo(dataRepo);
 };
 
-
+//displays all the repo links in gallery
 const displayRepoInfo = function (repos) {
+    filterInput.classList.remove("hide");
     for (let item of repos) {
         let listItem = document.createElement("li");
         listItem.classList.add("repo");
@@ -72,6 +77,7 @@ const getSpecificRepo = async function (repoName) {
     displaySpecificRepoInfo(specificRepo, languages)
 };
 
+//displays individual repo information
 const displaySpecificRepoInfo = function (repoInfo, languages) {
     repoData.innerHTML = "";
     let div = document.createElement("div");
@@ -84,4 +90,26 @@ const displaySpecificRepoInfo = function (repoInfo, languages) {
     repoData.append(div);
     repoData.classList.remove("hide");
     reposAllInfo.classList.add("hide");
+    backToGalleryButton.classList.remove("hide");
 };
+
+backToGalleryButton.addEventListener("click", function () {
+    reposAllInfo.classList.remove("hide");
+    repoData.classList.add("hide");
+});
+
+filterInput.addEventListener("input", function (e) {
+    const searchText = e.target.value;
+    const repos = document.querySelectorAll(".repo");
+    const searchTextLower = searchText.toLowerCase();
+    for (let repo of repos) {
+        let repoTextLower = repo.innerText.toLowerCase();
+
+        if (repoTextLower.includes(searchTextLower)) {
+            repo.classList.remove("hide");
+        } else {
+            repo.classList.add("hide");
+        };
+    };
+
+});
